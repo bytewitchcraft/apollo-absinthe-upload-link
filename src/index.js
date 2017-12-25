@@ -2,7 +2,7 @@ import { HttpLink } from 'apollo-link-http'
 import { ApolloLink, concat } from 'apollo-link'
 import { printAST } from 'apollo-client'
 import { ajax } from 'rxjs/observable/dom/ajax'
-import { append, pipe, join } from 'ramda'
+import { pipe, append, join } from 'ramda'
 
 const isObject = value => value !== null && typeof value === 'object'
 
@@ -12,16 +12,13 @@ const isFileList = value =>
 const isUploadFile = value =>
   typeof File !== 'undefined' && value instanceof File
 
-const generatePath = (path, key) => pipe(append(key), join('.'))(path)
-
 const extractFiles = variables => {
   const files = []
   const walkTree = (tree, path = []) => {
     const mapped = Array.isArray(tree) ? tree : Object.assign({}, tree)
-
     Object.keys(mapped).forEach(key => {
       const value = mapped[key]
-      const name = generatePath(path, key)
+      const name = pipe(append(key), join('.'))(path)
 
       if (isUploadFile(value) || isFileList(value)) {
         const file = isFileList(value)
@@ -44,25 +41,27 @@ const extractFiles = variables => {
   }
 }
 
-export const uploadMiddleware = new ApolloLink((operation, forward) => {
-  if (typeof FormData !== 'undefined' && isObject(operation.variables)) {
-    const { variables, files } = extractFiles(operation.variables)
+const createUploadMiddleware = ({ uri }) =>
+  new ApolloLink((operation, forward) => {
+    if (typeof FormData !== 'undefined' && isObject(operation.variables)) {
+      const { variables, files } = extractFiles(operation.variables)
 
-    if (files.length > 0) {
-      const formData = new FormData()
-      formData.append('query', printAST(operation.query))
-      formData.append('variables', JSON.stringify(variables))
-      files.forEach(({ name, file }) => formData.append(name, file))
+      if (files.length > 0) {
+        const formData = new FormData()
+        formData.append('query', printAST(operation.query))
+        formData.append('variables', JSON.stringify(variables))
+        files.forEach(({ name, file }) => formData.append(name, file))
 
-      return ajax({
-        url: uri,
-        body: formData,
-        method: 'POST',
-      }).map(({ response }) => response)
+        return ajax({
+          url: uri,
+          body: formData,
+          method: 'POST',
+        }).map(({ response }) => response)
+      }
     }
-  }
 
-  return forward(operation)
-})
+    return forward(operation)
+  })
 
-export const createLink = ({ uri }) => concat(uploadMiddleware, new HttpLink({ uri }))
+export const createLink = opts =>
+  concat(createUploadMiddleware(opts), new HttpLink(opts))
