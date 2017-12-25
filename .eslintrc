@@ -1,0 +1,20 @@
+{
+  "plugins": [
+    "prettier"
+  ],
+  "env": {
+    "jest": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": ["error", "never"],
+    "prettier/prettier": ["error", {
+      "singleQuote": true,
+      "trailingComma": "all",
+      "semi": false
+    }]
+  }
+}
