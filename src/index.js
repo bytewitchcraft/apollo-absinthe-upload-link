@@ -65,4 +65,4 @@ export const uploadMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation)
 })
 
-export const link = ({ uri }) => concat(uploadMiddleware, new HttpLink({ uri }))
+export const createLink = ({ uri }) => concat(uploadMiddleware, new HttpLink({ uri }))
