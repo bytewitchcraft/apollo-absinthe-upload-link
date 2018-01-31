@@ -1,7 +1,9 @@
 import { HttpLink } from 'apollo-link-http'
 import { ApolloLink, concat } from 'apollo-link'
 import { printAST } from 'apollo-client'
-import { ajax } from 'rxjs/observable/dom/ajax'
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/dom/ajax';
+import 'rxjs/add/operator/map';
 import { pipe, append, join } from 'ramda'
 
 const isObject = value => value !== null && typeof value === 'object'
@@ -52,7 +54,7 @@ const createUploadMiddleware = ({ uri }) =>
         formData.append('variables', JSON.stringify(variables))
         files.forEach(({ name, file }) => formData.append(name, file))
 
-        return ajax({
+        return Observable.ajax({
           url: uri,
           body: formData,
           method: 'POST',
