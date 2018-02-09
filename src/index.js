@@ -5,7 +5,7 @@ import request from './request'
 import extractFiles from './extractFiles'
 import { isObject } from './validators'
 
-export const createUploadMiddleware = ({ uri }) =>
+export const createUploadMiddleware = ({ uri, headers }) =>
   new ApolloLink((operation, forward) => {
     if (typeof FormData !== 'undefined' && isObject(operation.variables)) {
       const { variables, files } = extractFiles(operation.variables)
@@ -18,7 +18,11 @@ export const createUploadMiddleware = ({ uri }) =>
         formData.append('variables', JSON.stringify(variables))
         files.forEach(({ name, file }) => formData.append(name, file))
 
-        return request({ uri, body: formData, headers: contextHeaders })
+        return request({
+          uri,
+          body: formData,
+          headers: { ...contextHeaders, ...headers },
+        })
       }
     }
 
