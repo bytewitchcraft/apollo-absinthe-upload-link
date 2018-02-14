@@ -2,12 +2,14 @@
   "name": "apollo-absinthe-upload-link",
   "version": "1.0.3",
   "description": "A network interface for Apollo that enables file-uploading to Absinthe back ends.",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "repository": "https://github.com/bytewitchcraft/apollo-absinthe-upload-link",
   "author": "Ihor Katkov",
   "license": "MIT",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "compile": "yarn rimraf lib/* && yarn babel src -d lib",
+    "prepublish": "npm run compile"
   },
   "dependencies": {
     "apollo-client": "^2.0.4",
@@ -18,6 +20,7 @@
     "rxjs": "5.4.3"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.1",
     "babel-jest": "^22.2.0",
@@ -27,6 +30,7 @@
     "eslint-plugin-prettier": "^2.4.0",
     "jest": "^22.2.1",
     "prettier": "1.9.2",
-    "regenerator-runtime": "^0.11.1"
+    "regenerator-runtime": "^0.11.1",
+    "rimraf": "^2.6.2"
   }
 }
