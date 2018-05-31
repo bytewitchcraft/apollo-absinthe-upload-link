@@ -41,7 +41,30 @@ const client = new ApolloClient({
 
 ### Usage with React Native
 
-Not tested. Contributing is welcome.
+Substitute [`File`](https://developer.mozilla.org/en/docs/Web/API/File) with [`ReactNativeFile`](https://github.com/bytewitchcraft/apollo-absinthe-upload-link/blob/master/src/validators.js):
+
+```js
+import { ReactNativeFile } from 'apollo-absinthe-upload-link'
+
+const file = new ReactNativeFile({
+  uri: '…',
+  type: 'image/jpeg',
+  name: 'photo.jpg'
+})
+
+const files = ReactNativeFile.list([
+  {
+    uri: '…',
+    type: 'image/jpeg',
+    name: 'photo-1.jpg'
+  },
+  {
+    uri: '…',
+    type: 'image/jpeg',
+    name: 'photo-2.jpg'
+  }
+])
+```
 
 ## License
 
@@ -50,3 +73,4 @@ MIT (see LICENSE)
 ## Acknowledgements
 
 * @labtwentyfive's [`apollo-absinthe-upload-client`](https://github.com/labtwentyfive/apollo-absinthe-upload-client)
+* @jaydenseric [`apollo-upload-client`](https://github.com/jaydenseric/apollo-upload-client)

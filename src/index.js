@@ -31,3 +31,5 @@ export const createUploadMiddleware = ({ uri, headers }) =>
 
 export const createLink = opts =>
   concat(createUploadMiddleware(opts), new HttpLink(opts))
+
+export { ReactNativeFile } from './validators'
