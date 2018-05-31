@@ -1,6 +1,6 @@
 {
   "name": "apollo-absinthe-upload-link",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A network interface for Apollo that enables file-uploading to Absinthe back ends.",
   "main": "lib/index.js",
   "repository": "https://github.com/bytewitchcraft/apollo-absinthe-upload-link",
