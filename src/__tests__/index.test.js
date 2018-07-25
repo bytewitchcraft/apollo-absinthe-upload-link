@@ -1,4 +1,7 @@
 import { createUploadMiddleware } from '../index'
+import fetchMock from 'fetch-mock'
+import { execute } from 'apollo-link'
+import gql from 'graphql-tag'
 
 jest.mock('../request')
 jest.mock('../extractFiles')
@@ -7,6 +10,29 @@ const generateOperations = (context = { headers: {} }) => ({
   variables: {},
   getContext: () => context,
 })
+
+const sampleMutation = gql`
+  mutation SampleMutation {
+    stub {
+      id
+    }
+  }
+`
+const makePromise = res =>
+  new Promise((resolve, reject) => setTimeout(() => resolve(res)))
+
+const data = { data: { hello: 'world' } }
+
+const makeCallback = (done, body) => {
+  return (...args) => {
+    try {
+      body(...args)
+      done()
+    } catch (error) {
+      done.fail(error)
+    }
+  }
+}
 
 describe('#createUploadMiddleware', () => {
   it('should pass headers from context', () => {
@@ -46,5 +72,25 @@ describe('#createUploadMiddleware', () => {
     const result = request(operations, forward)
 
     expect(result.headers).toEqual({ ...contextHeaders, ...optionsHeaders })
+  })
+  it('uses custom fetch function', done => {
+    const variables = { params: 'stub' }
+    fetchMock.post('begin:http://data/', makePromise(data))
+    const link = createUploadMiddleware({
+      uri: 'http://data/',
+      fetch: fetch,
+    })
+    execute(link, {
+      query: sampleMutation,
+      variables,
+    }).subscribe(
+      makeCallback(done, result => {
+        const [uri, options] = fetchMock.lastCall()
+        const { method, body } = options
+        expect(body).toBeDefined()
+        expect(method).toBe('POST')
+        expect(uri).toBe('http://data/')
+      }),
+    )
   })
 })
