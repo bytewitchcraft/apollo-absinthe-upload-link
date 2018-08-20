@@ -21,7 +21,7 @@ export const createUploadMiddleware = ({ uri, headers }) =>
         return request({
           uri,
           body: formData,
-          headers: { ...contextHeaders, ...headers },
+          headers: Object.assign({}, contextHeaders, headers),
         })
       }
     }

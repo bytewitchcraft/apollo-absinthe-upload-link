@@ -51,5 +51,6 @@ export class ReactNativeFile {
    *   name: 'photo-2.jpg'
    * }])
    */
-  static list = files => files.map(file => new ReactNativeFile(file))
 }
+
+ReactNativeFile.list = files => files.map(file => new ReactNativeFile(file))

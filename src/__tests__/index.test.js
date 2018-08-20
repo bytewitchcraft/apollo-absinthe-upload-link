@@ -45,6 +45,8 @@ describe('#createUploadMiddleware', () => {
 
     const result = request(operations, forward)
 
-    expect(result.headers).toEqual({ ...contextHeaders, ...optionsHeaders })
+    expect(result.headers).toEqual(
+      Object.assign({}, contextHeaders, optionsHeaders),
+    )
   })
 })
