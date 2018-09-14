@@ -25,7 +25,7 @@ export const createUploadMiddleware = ({ uri, headers, fetch }) =>
           return new Observable(observer => {
             fetch(uri, {
               method: 'POST',
-              headers: { ...contextHeaders, ...headers },
+              headers: Object.assign({}, contextHeaders, headers),
               body: formData,
             })
               .then(response => {
@@ -50,7 +50,7 @@ export const createUploadMiddleware = ({ uri, headers, fetch }) =>
           return request({
             uri,
             body: formData,
-            headers: { ...contextHeaders, ...headers },
+            headers: Object.assign({}, contextHeaders, headers),
           })
         }
       }
