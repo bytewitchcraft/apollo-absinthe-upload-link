@@ -38,6 +38,33 @@ const client = new ApolloClient({
 });
 ```
 
+### Custom fetch
+
+You can use the fetch option when creating an apollo-absinthe-upload-link to do a lot of custom networking. This is useful if you want to modify the request based on the calculated headers or calculate the uri based on the operation.
+
+```js
+import ApolloClient from "apollo-client";
+import { createLink } from "apollo-absinthe-upload-link";
+
+const customFetch = (uri, options) => {
+  const { header } = Hawk.client.header(
+    "http://example.com:8000/resource/1?b=1&a=2",
+    "POST",
+    { credentials: credentials, ext: "some-app-data" }
+  );
+  options.headers.Authorization = header;
+  return fetch(uri, options);
+};
+
+const headers = { authorization: 1234 } 
+const client = new ApolloClient({
+    link: createLink({
+        uri: "/graphql"
+    }),
+    headers,
+    fetch: customFetch
+});
+```
 
 ### Usage with React Native
 
