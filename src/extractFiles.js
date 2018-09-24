@@ -1,4 +1,3 @@
-import { pipe, append, join } from 'ramda'
 import { isFileList, isObject, isUploadFile } from './validators'
 
 const extractFiles = variables => {
@@ -7,7 +6,7 @@ const extractFiles = variables => {
     const mapped = Array.isArray(tree) ? tree : Object.assign({}, tree)
     Object.keys(mapped).forEach(key => {
       const value = mapped[key]
-      const name = pipe(append(key), join('.'))(path)
+      const name = [...path, key].join('.')
 
       if (isUploadFile(value) || isFileList(value)) {
         const file = isFileList(value)
