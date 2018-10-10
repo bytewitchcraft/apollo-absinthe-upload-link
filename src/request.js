@@ -1,6 +1,5 @@
-import { Observable } from 'rxjs/Observable'
-import 'rxjs/add/observable/dom/ajax'
-import 'rxjs/add/operator/map'
+import { ajax } from 'rxjs/ajax'
+import { map } from 'rxjs/operators'
 
 /**
  * Request function
@@ -8,11 +7,11 @@ import 'rxjs/add/operator/map'
  * @param {Object} opts
  */
 const request = opts =>
-  Observable.ajax({
+  ajax({
     url: opts.uri,
     body: opts.body,
     method: 'POST',
     headers: opts.headers,
-  }).map(({ response }) => response)
+  }).pipe(map(({ response }) => response))
 
 export default request

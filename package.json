@@ -3,6 +3,7 @@
   "version": "1.3.0",
   "description": "A network interface for Apollo that enables file-uploading to Absinthe back ends.",
   "main": "lib/index.js",
+  "module": "src/index.js",
   "repository": "https://github.com/bytewitchcraft/apollo-absinthe-upload-link",
   "author": "Ihor Katkov",
   "license": "MIT",
@@ -17,7 +18,7 @@
     "apollo-link-http": "^1.3.2",
     "apollo-link-http-common": "^0.2.4",
     "graphql": "0.11.3",
-    "rxjs": "5.4.3"
+    "rxjs": "~6.2.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -25,7 +26,6 @@
     "babel-eslint": "^8.2.1",
     "babel-jest": "^22.2.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "eslint": "^4.14.0",
     "eslint-plugin-prettier": "^2.4.0",
@@ -36,5 +36,8 @@
     "prettier": "1.9.2",
     "regenerator-runtime": "^0.11.1",
     "rimraf": "^2.6.2"
+  },
+  "peerDependencies": {
+    "rxjs": ">=6.0.0"
   }
 }
