@@ -13,21 +13,27 @@ export const createUploadMiddleware = ({ uri, headers, fetch }) =>
       const { variables, files } = extractFiles(operation.variables)
 
       if (files.length > 0) {
-        const { headers: contextHeaders } = operation.getContext()
+        const context = operation.getContext()
+        const { headers: contextHeaders } = context
         const formData = new FormData()
 
         formData.append('query', printAST(operation.query))
         formData.append('variables', JSON.stringify(variables))
         files.forEach(({ name, file }) => formData.append(name, file))
 
+        let options = {
+          method: 'POST',
+          headers: Object.assign({}, contextHeaders, headers),
+          body: formData,
+        };
+        
+        // add fetch options to to options 
+        options = Object.assign(context.fetchOptions || {}, options);
+
         // is there a custom fetch? then use it
         if (fetch) {
           return new Observable(observer => {
-            fetch(uri, {
-              method: 'POST',
-              headers: Object.assign({}, contextHeaders, headers),
-              body: formData,
-            })
+            fetch(uri, options)
               .then(response => {
                 operation.setContext({ response })
                 return response
