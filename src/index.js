@@ -25,10 +25,10 @@ export const createUploadMiddleware = ({ uri, headers, fetch }) =>
           method: 'POST',
           headers: Object.assign({}, contextHeaders, headers),
           body: formData,
-        };
-        
-        // add context.fetchOptions to fetch options 
-        options = Object.assign(context.fetchOptions || {}, options);
+        }
+
+        // add context.fetchOptions to fetch options
+        options = Object.assign(context.fetchOptions || {}, options)
 
         // is there a custom fetch? then use it
         if (fetch) {
