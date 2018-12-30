@@ -66,6 +66,25 @@ const client = new ApolloClient({
 });
 ```
 
+### Custom HttpLink
+
+By default we are using [apollo-link-http](https://www.npmjs.com/package/apollo-link-http) as default HTTP link library. But there are other possible HTTP links available such as [apollo-link-batch-http](https://www.npmjs.com/package/apollo-link-batch-http). To pass custom `HttpLink` constructor you can do so with `opts.httpLink`
+
+
+```js
+import ApolloClient from "apollo-client";
+import { createLink } from "apollo-absinthe-upload-link";
+import { BatchHttpLink } from "apollo-link-batch-http";
+
+const client = new ApolloClient({
+    link: createLink({
+        uri: "/graphql",
+        httpLink: BatchHttpLink,
+    })
+});
+```
+
+
 ### Usage with React Native
 
 Substitute [`File`](https://developer.mozilla.org/en/docs/Web/API/File) with [`ReactNativeFile`](https://github.com/bytewitchcraft/apollo-absinthe-upload-link/blob/master/src/validators.js):

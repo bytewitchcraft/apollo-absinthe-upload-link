@@ -7,6 +7,14 @@ import { isObject } from './validators'
 import { parseAndCheckHttpResponse } from 'apollo-link-http-common'
 import { Observable } from 'apollo-link'
 
+export const createHttpLink = opts => fallbackLink => {
+  if (opts.httpLink) {
+    return new opts.httpLink(opts)
+  } else {
+    return new fallbackLink(opts)
+  }
+}
+
 export const createUploadMiddleware = ({ uri, headers, fetch }) =>
   new ApolloLink((operation, forward) => {
     if (typeof FormData !== 'undefined' && isObject(operation.variables)) {
@@ -60,6 +68,6 @@ export const createUploadMiddleware = ({ uri, headers, fetch }) =>
   })
 
 export const createLink = opts =>
-  concat(createUploadMiddleware(opts), new HttpLink(opts))
+  concat(createUploadMiddleware(opts), createHttpLink(opts)(HttpLink))
 
 export { ReactNativeFile } from './validators'
