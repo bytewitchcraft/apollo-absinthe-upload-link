@@ -1,6 +1,6 @@
 import { HttpLink } from 'apollo-link-http'
 import { ApolloLink, concat } from 'apollo-link'
-import { print } from "graphql/language/printer"
+import { print } from 'graphql/language/printer'
 import request from './request'
 import extractFiles from './extractFiles'
 import { isObject } from './validators'
