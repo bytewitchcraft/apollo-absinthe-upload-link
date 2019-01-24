@@ -1,6 +1,6 @@
 import { HttpLink } from 'apollo-link-http'
 import { ApolloLink, concat } from 'apollo-link'
-import { printAST } from 'apollo-client'
+import { print } from "graphql/language/printer"
 import request from './request'
 import extractFiles from './extractFiles'
 import { isObject } from './validators'
@@ -17,7 +17,7 @@ export const createUploadMiddleware = ({ uri, headers, fetch }) =>
         const { headers: contextHeaders } = context
         const formData = new FormData()
 
-        formData.append('query', printAST(operation.query))
+        formData.append('query', print(operation.query))
         formData.append('variables', JSON.stringify(variables))
         files.forEach(({ name, file }) => formData.append(name, file))
 
