@@ -12,6 +12,8 @@ const request = opts =>
     body: opts.body,
     method: 'POST',
     headers: opts.headers,
+    withCredentials: opts.withCredentials,
+    crossDomain: opts.crossDomain
   }).pipe(map(({ response }) => response))
 
 export default request
