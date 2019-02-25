@@ -25,6 +25,7 @@ export const createUploadMiddleware = ({ uri, headers, fetch, credentials }) =>
           method: 'POST',
           headers: Object.assign({}, contextHeaders, headers),
           body: formData,
+          credentials,
         }
 
         // add context.fetchOptions to fetch options
