@@ -53,14 +53,13 @@ export const createUploadMiddleware = ({ uri, headers, fetch, credentials }) =>
               })
           })
         } else {
-          const withCredentials = credentials === "include";
-          
+          const withCredentials = credentials === 'include'
           return request({
             uri,
             body: formData,
             headers: Object.assign({}, contextHeaders, headers),
             withCredentials,
-            crossDomain: withCredentials
+            crossDomain: withCredentials,
           })
         }
       }
