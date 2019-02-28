@@ -7,7 +7,7 @@ import { isObject } from './validators'
 import { parseAndCheckHttpResponse } from 'apollo-link-http-common'
 import { Observable } from 'apollo-link'
 
-export const createUploadMiddleware = ({ uri, headers, fetch }) =>
+export const createUploadMiddleware = ({ uri, headers, fetch, credentials }) =>
   new ApolloLink((operation, forward) => {
     if (typeof FormData !== 'undefined' && isObject(operation.variables)) {
       const { variables, files } = extractFiles(operation.variables)
@@ -25,6 +25,7 @@ export const createUploadMiddleware = ({ uri, headers, fetch }) =>
           method: 'POST',
           headers: Object.assign({}, contextHeaders, headers),
           body: formData,
+          credentials,
         }
 
         // add context.fetchOptions to fetch options
@@ -53,10 +54,13 @@ export const createUploadMiddleware = ({ uri, headers, fetch }) =>
               })
           })
         } else {
+          const withCredentials = credentials === 'include'
           return request({
             uri,
             body: formData,
             headers: Object.assign({}, contextHeaders, headers),
+            withCredentials,
+            crossDomain: withCredentials,
           })
         }
       }
