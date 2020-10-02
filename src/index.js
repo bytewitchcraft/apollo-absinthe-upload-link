@@ -1,11 +1,15 @@
-import { HttpLink } from 'apollo-link-http'
-import { ApolloLink, concat } from 'apollo-link'
+import {
+  HttpLink,
+  ApolloLink,
+  concat,
+  parseAndCheckHttpResponse,
+  Observable,
+} from '@apollo/client/core'
 import { print } from 'graphql/language/printer'
+
 import request from './request'
 import extractFiles from './extractFiles'
 import { isObject } from './validators'
-import { parseAndCheckHttpResponse } from 'apollo-link-http-common'
-import { Observable } from 'apollo-link'
 
 export const createUploadMiddleware = ({ uri, headers, fetch, credentials }) =>
   new ApolloLink((operation, forward) => {
