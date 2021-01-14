@@ -1,7 +1,7 @@
-import { createUploadMiddleware } from '../index'
 import fetchMock from 'fetch-mock'
-import { execute } from 'apollo-link'
-import gql from 'graphql-tag'
+import { execute, gql } from '@apollo/client/core'
+
+import { createUploadMiddleware } from '../index'
 
 jest.mock('../request')
 jest.mock('../extractFiles')
@@ -46,6 +46,7 @@ describe('#createUploadMiddleware', () => {
     expect(forward).toHaveBeenCalledTimes(0)
     expect(result.headers).toEqual(headers)
   })
+
   it('should pass headers from options', () => {
     const headers = { authorization: '1234' }
     const { request } = createUploadMiddleware({
@@ -59,6 +60,7 @@ describe('#createUploadMiddleware', () => {
 
     expect(result.headers).toEqual(headers)
   })
+
   it('should combine headers from options and context', () => {
     const optionsHeaders = { 'x-spree-token': 'token' }
     const contextHeaders = { authorization: '1234' }
@@ -75,6 +77,7 @@ describe('#createUploadMiddleware', () => {
       Object.assign({}, contextHeaders, optionsHeaders),
     )
   })
+
   it('uses custom fetch function', done => {
     const variables = { params: 'stub' }
     fetchMock.post('begin:http://data/', makePromise(data))
