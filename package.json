@@ -28,7 +28,7 @@
     "eslint-plugin-prettier": "^2.4.0",
     "fetch-mock": "^6.5.2",
     "jest": "^22.2.1",
-    "node-fetch": "^2.2.0",
+    "node-fetch": "^3.1.1",
     "prettier": "1.9.2",
     "regenerator-runtime": "^0.11.1",
     "rimraf": "^2.6.2"
